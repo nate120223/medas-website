@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="id" id="html-root">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>MEDA'S Barbershop</title>
+  <meta name="description" content="MEDA'S Barbershop — The Best Barbershop in Town. Tersedia di UNUD Jimbaran, Kori Nuansa Jimbaran, dan Batanghari Panjer.">
+  <meta name="theme-color" content="#0d0d0d">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cinzel:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg-main: #0d0d0d; --bg-card: #1a1a1a; --bg-card-hover: #242424; --bg-footer: #050505;
+      --amber: #D9A441; --brick: #A5432F; --text-primary: #FAFAF7; --text-secondary: #c8c8c4; --text-muted: #8a8a86;
+      --border-subtle: rgba(255,255,255,0.08); --border-card: rgba(255,255,255,0.06);
+      --shadow-sm: 0 4px 16px rgba(0,0,0,0.5); --shadow-md: 0 16px 40px rgba(0,0,0,0.6);
+      --radius: 16px; --radius-sm: 12px; --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      --font-heading: 'Bebas Neue', 'Arial Narrow', Impact, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-classic: 'Colonna MT', 'Cinzel', 'Playfair Display', Georgia, serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: var(--bg-main); color: var(--text-primary); line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; font-family: inherit; border: none; background: none; color: inherit; }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+    /* NAVBAR & HERO */
+    #progress-bar { position: fixed; top: 0; left: 0; height: 3px; width: 0%; background: var(--amber); z-index: 1000; transition: width 0.1s linear; }
+    .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 900; padding: 16px 0; transition: all 0.4s var(--ease); background: transparent; }
+    .navbar.scrolled { background: rgba(13,13,13,0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 10px 0; box-shadow: 0 4px 24px rgba(0,0,0,0.6); }
+    .navbar .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    
+    /* LOGO PAKAI FONT CLASSIC */
+    .logo { font-family: var(--font-classic); font-size: clamp(1.4rem, 5vw, 1.8rem); letter-spacing: 1px; color: var(--text-primary); white-space: nowrap; }
+    .logo span { color: var(--amber); }
+    
+    .nav-links { display: none; align-items: center; gap: 4px; list-style: none; }
+    .nav-links a { position: relative; color: var(--text-primary); font-size: 0.82rem; font-weight: 500; padding: 8px 10px; border-radius: 8px; }
+    .nav-links a::after { content: ''; position: absolute; bottom: 2px; left: 10px; right: 10px; height: 2px; background: var(--amber); border-radius: 2px; transform: scaleX(0); transform-origin: left; transition: transform 0.35s var(--ease); }
+    .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+    .nav-links a.active { color: var(--amber); }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .lang-toggle { display: flex; align-items: center; gap: 2px; background: rgba(255,255,255,0.08); border-radius: 999px; padding: 3px; border: 1px solid rgba(255,255,255,0.15); }
+    .lang-toggle button { padding: 6px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; color: rgba(255,255,255,0.6); transition: all 0.3s var(--ease); }
+    .lang-toggle button.active { background: var(--amber); color: #111; }
+    .btn-nav-booking { display: none; align-items: center; gap: 6px; background: var(--amber); color: #111; font-weight: 700; font-size: 0.8rem; padding: 10px 18px; border-radius: 999px; transition: all 0.3s var(--ease); }
+    .hamburger { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 42px; height: 42px; border-radius: 12px; gap: 5px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); }
+    .hamburger span { display: block; width: 20px; height: 2px; background: var(--text-primary); border-radius: 2px; transition: all 0.4s var(--ease); }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu { position: fixed; top: 0; left: 0; right: 0; z-index: 850; background: rgba(13,13,13,0.98); padding: 90px 24px 32px; transform: translateY(-100%); transition: transform 0.5s var(--ease); border-bottom: 1px solid rgba(217,164,65,0.2); visibility: hidden; }
+    .mobile-menu.open { transform: translateY(0); visibility: visible; }
+    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+    .mobile-menu a { display: block; color: var(--text-primary); font-size: 1.05rem; font-weight: 500; padding: 14px 8px; border-bottom: 1px solid var(--border-subtle); }
+    .mobile-menu .btn-mobile-booking { display: flex; justify-content: center; background: var(--amber); color: #111; font-weight: 700; padding: 16px; border-radius: 999px; margin-top: 20px; }
+
+    .hero { position: relative; min-height: 100svh; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
+    .hero-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: heroZoom 8s var(--ease) forwards; }
+    @keyframes heroZoom { from { transform: scale(1.1); } to { transform: scale(1.0); } }
+    .hero-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.6); z-index: 1; }
+    .hero-content { position: relative; z-index: 2; text-align: center; padding: 120px 24px 80px; max-width: 820px; }
+    
+    /* JUDUL HERO PAKAI FONT CLASSIC */
+    .hero h1 { font-family: var(--font-classic); font-size: clamp(2.8rem, 10vw, 5rem); line-height: 1.05; color: var(--text-primary); margin-bottom: 16px; }
+    .hero h1 .line { display: block; opacity: 0; transform: translateY(30px); animation: lineUp 0.7s var(--ease) forwards; }
+    .hero h1 .line:nth-child(1) { animation-delay: 0.3s; }
+    @keyframes lineUp { to { opacity: 1; transform: translateY(0); } }
+    
+    .hero-sub { font-size: clamp(1rem, 3vw, 1.2rem); color: var(--text-primary); max-width: 700px; margin: 0 auto 32px; opacity: 0; animation: lineUp 0.7s var(--ease) 0.7s forwards; }
+    .hero-sub .sub-title { font-family: var(--font-classic); font-weight: 700; font-size: 1.5em; display: block; margin-bottom: 12px; color: var(--amber); text-transform: capitalize; letter-spacing: 1px;}
+    
+    .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; opacity: 0; animation: lineUp 0.7s var(--ease) 0.9s forwards; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: 0.9rem; padding: 14px 28px; border-radius: 999px; transition: all 0.3s var(--ease); }
+    .btn-outline { background: transparent; color: var(--text-primary); border: 1.5px solid rgba(250,250,247,0.6); }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--text-primary); transform: translateY(-2px);}
+    
+    .barber-divider { height: 6px; width: 100%; background: repeating-linear-gradient(-45deg, var(--brick) 0px, var(--brick) 12px, #FAFAF7 12px, #FAFAF7 24px, #0d0d0d 24px, #0d0d0d 36px, #FAFAF7 36px, #FAFAF7 48px); background-size: 200% 100%; animation: barberMove 8s linear infinite; }
+    @keyframes barberMove { from { background-position: 0 0; } to { background-position: 200% 0; } }
+
+    /* SECTIONS */
+    .section { padding: 80px 0; background: var(--bg-main); }
+    .section-title { font-family: var(--font-heading); font-size: clamp(2rem, 7vw, 3rem); margin-bottom: 8px; }
+    .section-title .accent { color: var(--amber); }
+    .section-desc { color: var(--text-secondary); max-width: 600px; font-size: 0.95rem; margin-bottom: 40px; }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    
+    .grid-4 { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 640px) { .grid-4 { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .grid-4 { grid-template-columns: repeat(3, 1fr); } }
+    
+    .card { background: var(--bg-card); border-radius: var(--radius); padding: 28px 24px; box-shadow: var(--shadow-sm); border: 1px solid var(--border-card); transition: all 0.4s var(--ease); }
+    .card:hover { transform: translateY(-4px); background: var(--bg-card-hover); }
+    .card-icon { width: 48px; height: 48px; margin-bottom: 16px; color: var(--amber); }
+    .card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+    .card p { font-size: 0.88rem; color: var(--text-secondary); }
+
+    /* TABS CABANG & HARGA */
+    .branch-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; justify-content: center; }
+    .branch-tab { background: var(--bg-card); border: 1px solid var(--border-card); color: var(--text-secondary); padding: 10px 24px; border-radius: 999px; font-size: 0.9rem; font-weight: 600; transition: all 0.3s; }
+    .branch-tab.active { background: var(--amber); color: #111; border-color: var(--amber); }
+    .branch-tab:hover:not(.active) { background: rgba(255,255,255,0.1); }
+    
+    .service-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    @media (min-width: 768px) { .service-grid { grid-template-columns: repeat(2, 1fr); } }
+    .service-card { display: flex; flex-direction: column; gap: 8px; background: var(--bg-card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border-card); position: relative; overflow: hidden; }
+    .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--amber); transform: scaleY(0); transform-origin: top; transition: transform 0.4s; }
+    .service-card:hover::before { transform: scaleY(1); }
+    .service-card h3 { font-size: 1.05rem; font-weight: 700; }
+    .service-card .price { font-family: var(--font-heading); font-size: 1.8rem; color: var(--amber); }
+    
+    /* TENTANG CABANG (FOTO & ALAMAT) */
+    .branch-about-grid { display: grid; grid-template-columns: 1fr; gap: 32px; }
+    @media (min-width: 768px) { .branch-about-grid { grid-template-columns: repeat(3, 1fr); } }
+    .branch-about-card { text-align: center; }
+    .branch-about-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: var(--radius); border: 1px solid var(--border-card); margin-bottom: 16px; box-shadow: var(--shadow-sm); }
+    .branch-about-text { font-family: var(--font-classic); font-size: 1rem; color: var(--text-secondary); line-height: 1.5; }
+    .branch-about-text strong { color: var(--text-primary); font-size: 1.1rem; display: block; margin-bottom: 4px;}
+
+    /* GALERI (10 FOTO) */
+    .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    @media (min-width: 768px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+    .gallery-item { position: relative; overflow: hidden; border-radius: var(--radius-sm); aspect-ratio: 1/1; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
+    .gallery-item:hover img { transform: scale(1.06); }
+
+    /* LOKASI & MAPS */
+    .map-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 24px;}
+    @media (min-width: 768px) { .map-grid { grid-template-columns: repeat(3, 1fr); } }
+    .map-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: rgba(217,164,65,0.1); color: var(--amber); border: 1px solid var(--amber); font-weight: 700; padding: 16px; border-radius: 999px; transition: all 0.3s; text-align: center;}
+    .map-btn:hover { background: var(--amber); color: #111; }
+
+    /* FOOTER */
+    .footer { background: var(--bg-footer); padding: 48px 0 32px; border-top: 1px solid var(--border-subtle); }
+    .footer-grid { display: grid; grid-template-columns: 1fr; gap: 28px; }
+    @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr; } }
+    .footer h4 { font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 12px; }
+    .footer p, .footer a { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.8; }
+    .social-links { display: flex; gap: 16px; margin-top: 16px; }
+    .social-links a { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,0.05); color: var(--text-primary); transition: all 0.3s; }
+    .social-links a:hover { background: var(--amber); color: #111; transform: translateY(-3px); }
+    .footer-bottom { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--border-subtle); font-size: 0.78rem; text-align: center; color: var(--text-muted); }
+
+    .wa-float { position: fixed; bottom: 24px; right: 24px; z-index: 800; width: 56px; height: 56px; border-radius: 50%; background: #25D366; color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 24px rgba(37,211,102,0.4); animation: waPulse 5s var(--ease) infinite; }
+    @keyframes waPulse { 0%, 90%, 100% { transform: scale(1); } 95% { transform: scale(1.08); } }
+
+    @media (min-width: 900px) { .nav-links { display: flex; } .hamburger { display: none; } .btn-nav-booking { display: inline-flex; } .mobile-menu { display: none !important; } }
+  </style>
+</head>
+<body>
+  <div id="progress-bar"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#beranda" class="logo">MEDA'S <span>BARBERSHOP</span></a>
+      <ul class="nav-links">
+        <li><a href="#beranda" data-i18n="nav.home" class="active">Beranda</a></li>
+        <li><a href="#layanan" data-i18n="nav.services">Layanan</a></li>
+        <li><a href="#tentang" data-i18n="nav.about">Cabang</a></li>
+        <li><a href="#lokasi" data-i18n="nav.location">Lokasi</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="lang-toggle">
+          <button id="lang-id" class="active">ID</button>
+          <button id="lang-en">EN</button>
+        </div>
+        <a href="#" class="btn-nav-booking" id="navBooking" target="_blank">Booking</a>
+        <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <ul>
+      <li><a href="#beranda" data-i18n="nav.home">Beranda</a></li>
+      <li><a href="#layanan" data-i18n="nav.services">Layanan</a></li>
+      <li><a href="#tentang" data-i18n="nav.about">Cabang</a></li>
+      <li><a href="#lokasi" data-i18n="nav.location">Lokasi</a></li>
+    </ul>
+    <a href="#" class="btn-mobile-booking" id="mobileBooking" target="_blank">Booking via WhatsApp</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero" id="beranda">
+    <!-- Menggunakan gambar Kori untuk hero -->
+    <img src="deepseek_20261030_9b82ad.png" alt="MEDA'S Barbershop" class="hero-bg">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>
+        <span class="line" data-i18n="hero.line1">MEDA'S BARBERSHOP</span>
+      </h1>
+      <p class="hero-sub" data-i18n="hero.sub">
+        <span class="sub-title">The Best Barbershop In Town</span>
+        Barbershop terbaik di kota anda dengan Tukang Cukur ramah dan terampil, tempat nyaman, AC dan WiFi gratis.
+      </p>
+      <div class="hero-cta">
+        <a href="#layanan" class="btn btn-outline" data-i18n="hero.cta">Lihat Layanan + Harga</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="barber-divider"></div>
+
+  <!-- MENGAPA KAMI -->
+  <section class="section" id="mengapa">
+    <div class="container">
+      <h2 class="section-title reveal" data-i18n="why.title">MENGAPA <span class="accent">MEDA'S Barbershop</span>?</h2>
+      <p class="section-desc reveal" data-i18n="why.desc">Bukan sekadar potong rambut — ini soal pengalaman dan kenyamanan.</p>
+      <div class="grid-4">
+        <div class="card reveal">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <h3 data-i18n="features.1.title">Lokasi Strategis</h3>
+          <p data-i18n="features.1.desc">Tersedia di UNUD Jimbaran, Kori Nuansa Jimbaran, dan Batanghari Panjer.</p>
+        </div>
+        <div class="card reveal" style="transition-delay:100ms;">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          <h3 data-i18n="features.2.title">Tukang Cukur Berpengalaman</h3>
+          <p data-i18n="features.2.desc">Dilayani dengan senyum dan komunikasi yang nyaman.</p>
+        </div>
+        <div class="card reveal" style="transition-delay:200ms;">
+          <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/></svg>
+          <h3 data-i18n="features.3.title">Wi-Fi Gratis</h3>
+          <p data-i18n="features.3.desc">Free WiFi Spot — tetap terhubung saat menunggu.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="barber-divider"></div>
+
+  <!-- LAYANAN & HARGA -->
+  <section class="section" id="layanan">
+    <div class="container">
+      <h2 class="section-title reveal" data-i18n="services.title">Layanan & <span class="accent">Harga</span></h2>
+      <p class="section-desc reveal" data-i18n="services.desc">Pilih layanan yang anda butuhkan dengan harga yang terjangkau dan kualitas terjaga</p>
+      
+      <div class="branch-tabs reveal">
+        <button class="branch-tab active" data-branch="unud">UNUD Jimbaran</button>
+        <button class="branch-tab" data-branch="kori">Kori Nuansa Jimbaran</button>
+        <button class="branch-tab" data-branch="batanghari">Batanghari Panjer</button>
+      </div>
+
+      <div class="service-grid reveal" id="serviceGrid"></div>
+    </div>
+  </section>
+
+  <div class="barber-divider"></div>
+
+  <!-- TENTANG CABANG KAMI -->
+  <section class="section" id="tentang">
+    <div class="container">
+      <h2 class="section-title reveal" data-i18n="about.title">TENTANG <span class="accent">CABANG KAMI</span></h2>
+      <p class="section-desc reveal" data-i18n="about.desc">MEDA'S Barbershop mempunyai 3 cabang di kota anda yang mudah anda jangkau.</p>
+      
+      <div class="branch-about-grid">
+        <div class="branch-about-card reveal">
+          <img src="deepseek_20261030_20d80b.png" alt="MEDA'S Barbershop UNUD Jimbaran" class="branch-about-img" loading="lazy">
+          <p class="branch-about-text">
+            <strong>MEDA'S Barbershop UNUD, Jimbaran</strong>
+            di Jl. Raya Universitas Udayana, Jimbaran, Badung, Bali.
+          </p>
+        </div>
+        <div class="branch-about-card reveal" style="transition-delay:100ms;">
+          <img src="deepseek_20261030_9b82ad.png" alt="MEDA'S Barbershop Kori Nuansa Jimbaran" class="branch-about-img" loading="lazy">
+          <p class="branch-about-text">
+            <strong>MEDA'S Barbershop Kori Nuansa, Jimbaran</strong>
+            di Jl. Nuansa Timur VII No.2, Jimbaran, Badung, Bali.
+          </p>
+        </div>
+        <div class="branch-about-card reveal" style="transition-delay:200ms;">
+          <img src="deepseek_20261030_0d1f2c.png" alt="MEDA'S Barbershop Batanghari Panjer" class="branch-about-img" loading="lazy">
+          <p class="branch-about-text">
+            <strong>MEDA'S Barbershop Batanghari, Panjer</strong>
+            di Jl. Tukad Batanghari XI A No.25, Panjer, Denpasar Selatan, Kota Denpasar, Bali.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="barber-divider"></div>
+
+  <!-- GALERI (10 FOTO) -->
+  <section class="section" id="galeri">
+    <div class="container">
+      <h2 class="section-title reveal" data-i18n="gallery.title">Galeri <span class="accent">Foto</span></h2>
+      <p class="section-desc reveal" data-i18n="gallery.desc">Hasil potongan asli dari outlet kami.</p>
+      <div class="gallery-grid">
+        <div class="gallery-item reveal"><img src="IMG_20261030_140939_993.png" loading="lazy" alt="Hasil Potongan 1"></div>
+        <div class="gallery-item reveal"><img src="IMG_20261030_140933_217.png" loading="lazy" alt="Hasil Potongan 2"></div>
+        <div class="gallery-item reveal"><img src="IMG_20261030_140922_729.png" loading="lazy" alt="Hasil Potongan 3"></div>
+        <div class="gallery-item reveal"><img src="IMG_20261030_140915_378.png" loading="lazy" alt="Hasil Potongan 4"></div>
+        <div class="gallery-item reveal"><img src="IMG_20261030_140905_058.png" loading="lazy" alt="Hasil Potongan 5"></div>
+        <div class="gallery-item reveal"><img src="IMG_20261030_140851_665.png" loading="lazy" alt="Hasil Potongan 6"></div>
+        <div class="gallery-item reveal"><img src="IMG_20261030_140837_961.png" loading="lazy" alt="Hasil Potongan 7"></div>
+        <div class="gallery-item reveal"><img src="IMG_20261030_140829_486.png" loading="lazy" alt="Hasil Potongan 8"></div>
+        <div class="gallery-item reveal"><img src="IMG_20261030_140815_443.png" loading="lazy" alt="Hasil Potongan 9"></div>
+        <div class="gallery-item reveal"><img src="IMG_20261030_135604_076.png" loading="lazy" alt="Hasil Potongan 10"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="barber-divider"></div>
+
+  <!-- JAM BUKA & LOKASI -->
+  <section class="section" id="lokasi">
+    <div class="container">
+      <h2 class="section-title reveal" data-i18n="location.title">JAM BUKA & <span class="accent">LOKASI</span></h2>
+      <p class="section-desc reveal" data-i18n="location.desc">Berada di kota anda yang mudah dijangkau.</p>
+      
+      <div class="reveal">
+        <table class="hours-table" style="width: 100%; max-width: 400px; margin-bottom: 24px; border-collapse: collapse;">
+          <tr style="border-bottom: 1px solid var(--border-subtle);">
+            <td style="padding: 12px 0; color: var(--text-secondary);" data-i18n="location.day">Setiap Hari</td>
+            <td style="padding: 12px 0; text-align: right; font-weight: 600;">10.30 – 21.00 WITA</td>
+          </tr>
+        </table>
+        
+        <div class="map-grid">
+          <a href="https://maps.app.goo.gl/jyZaxBNRkqyJ5bYE8" target="_blank" class="map-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            UNUD Jimbaran
+          </a>
+          <a href="https://maps.app.goo.gl/mLZH3zh1GzEF6s3r8" target="_blank" class="map-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            Kori Nuansa Jimbaran
+          </a>
+          <a href="https://maps.app.goo.gl/xP1Sk1vdL23au41fA" target="_blank" class="map-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            Batanghari Panjer
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="barber-divider"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>MEDA'S BARBERSHOP</h4>
+          <p data-i18n="footer.tagline">The Best Barbershop in Town. One place haircut & hair wash. Friendly barbers, cozy place, and free WiFi.</p>
+          <div class="social-links">
+            <a href="https://www.facebook.com/profile.php?id=100083308332699" target="_blank" aria-label="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+            <a href="https://www.instagram.com/medasbarbershop" target="_blank" aria-label="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+            <a href="https://youtube.com/@medasbarbershop3106" target="_blank" aria-label="YouTube"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
+            <a href="https://www.tiktok.com/@medasbarbershop" target="_blank" aria-label="TikTok"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
+          </div>
+        </div>
+        <div>
+          <h4 data-i18n="footer.nav">Navigation</h4>
+          <p><a href="#beranda" data-i18n="nav.home">Home</a></p>
+          <p><a href="#layanan" data-i18n="nav.services">Services</a></p>
+          <p><a href="#tentang" data-i18n="nav.about">Branches</a></p>
+          <p><a href="#lokasi" data-i18n="nav.location">Location</a></p>
+        </div>
+        <div>
+          <h4 data-i18n="footer.contact">Contact</h4>
+          <p><a href="https://wa.me/6285237019944" target="_blank">0852-3701-9944</a></p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© <span id="year"></span> MEDA'S Barbershop. <span data-i18n="footer.rights">All rights reserved.</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- FLOATING WA -->
+  <a href="#" class="wa-float" id="waFloat" target="_blank" aria-label="Chat WhatsApp">
+    <svg viewBox="0 0 24 24" fill="currentColor" width="28" height="28"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <script>
+  (function() {
+    'use strict';
+    var WHATSAPP_NUMBER = '6285237019944';
+    var currentLang = 'id';
+    var currentBranch = 'unud';
+
+    var SERVICES = {
+      unud: {
+        id: [
+          { name: 'Potong rambut dewasa & anak-anak', price: 'Rp 40.000' },
+          { name: 'Cuci rambut + menthol', price: 'Rp 25.000' },
+          { name: 'Cuci rambut + menthol + pijat kepala', price: 'Rp 30.000' },
+          { name: 'Cukur kumis/brewok', price: 'Rp 30.000' },
+          { name: 'Plontos licin', price: 'Rp 50.000' },
+          { name: 'Paket: Potong + cuci + menthol dewasa & anak-anak', price: 'Rp 50.000' },
+          { name: 'Paket: Potong + cuci + menthol + pijat kepala', price: 'Rp 60.000' },
+          { name: 'Paket: Potong rambut + cukur kumis/brewok', price: 'Rp 60.000' },
+          { name: 'Paket: Potong + cuci rambut + cukur kumis/brewok', price: 'Rp 80.000' },
+          { name: 'Paket: Potong + semir hitam + cuci rambut', price: 'Rp 100.000' },
+          { name: 'Paket: Semir hitam + cuci rambut + menthol + pijat kepala', price: 'Rp 70.000' },
+          { name: 'Treatment: Bleaching, hair highlight & coloring', price: 'Rp 300.000 - 400.000' }
+        ],
+        en: [
+          { name: 'Haircut adult & kids', price: 'Rp 60.000' },
+          { name: 'Hair wash + menthol', price: 'Rp 50.000' },
+          { name: 'Haircut adult + menthol + head massage', price: 'Rp 60.000' },
+          { name: 'Mustache/beard shave', price: 'Rp 50.000' },
+          { name: 'Smooth bald', price: 'Rp 70.000' },
+          { name: 'Package: Haircut + hair wash + menthol adult & kids', price: 'Rp 90.000' },
+          { name: 'Package: Haircut + hair wash + menthol + head massage', price: 'Rp 100.000' },
+          { name: 'Package: Haircut + mustache/beard shave', price: 'Rp 100.000' },
+          { name: 'Package: Haircut + hair wash + mustache/beard shave', price: 'Rp 150.000' },
+          { name: 'Package: Haircut + black coloring + hair wash', price: 'Rp 200.000' },
+          { name: 'Package: Black coloring + hair wash + menthol + head massage', price: 'Rp 125.000' },
+          { name: 'Treatment: Bleaching, hair highlight & coloring', price: 'Rp 300.000 - 400.000' }
+        ]
+      },
+      kori: { id: [], en: [] },
+      batanghari: {
+        id: [
+          { name: 'Potong rambut dewasa', price: 'Rp 30.000' },
+          { name: 'Potong rambut anak-anak', price: 'Rp 25.000' },
+          { name: 'Cuci rambut + menthol + pijat kepala', price: 'Rp 25.000' },
+          { name: 'Cukur kumis/brewok', price: 'Rp 25.000' },
+          { name: 'Plontos licin', price: 'Rp 50.000' },
+          { name: 'Paket: Potong + cuci + menthol + pijat kepala dewasa', price: 'Rp 50.000' },
+          { name: 'Paket: Potong + cuci + menthol + pijat kepala anak-anak', price: 'Rp 40.000' },
+          { name: 'Paket: Potong rambut + cukur kumis/brewok', price: 'Rp 50.000' },
+          { name: 'Paket: Potong + cuci rambut + cukur kumis/brewok', price: 'Rp 70.000' },
+          { name: 'Paket: Potong rambut + semir hitam + cuci rambut', price: 'Rp 90.000' },
+          { name: 'Paket: Semir hitam + cuci rambut + menthol + pijat kepala', price: 'Rp 70.000' },
+          { name: 'Treatment: Bleaching, hair highlight & coloring', price: 'Rp 300.000 - 400.000' }
+        ],
+        en: [
+          { name: 'Adult haircut', price: 'Rp 50.000' },
+          { name: 'Kid haircut', price: 'Rp 40.000' },
+          { name: 'Hair wash + menthol + head massage', price: 'Rp 40.000' },
+          { name: 'Mustache/beard shave', price: 'Rp 40.000' },
+          { name: 'Smooth bald', price: 'Rp 60.000' },
+          { name: 'Package: Adult haircut + hair wash + menthol + head massage', price: 'Rp 80.000' },
+          { name: 'Package: Kids haircut + hair wash + menthol + head massage', price: 'Rp 60.000' },
+          { name: 'Package: Haircut + mustache/beard shave', price: 'Rp 80.000' },
+          { name: 'Package: Haircut + hair wash + mustache/beard shave', price: 'Rp 120.000' },
+          { name: 'Package: Haircut + black coloring + hair wash', price: 'Rp 150.000' },
+          { name: 'Package: Black coloring + hair wash + menthol + head massage', price: 'Rp 100.000' },
+          { name: 'Treatment: Bleaching, hair highlight & coloring', price: 'Rp 300.000 - 400.000' }
+        ]
+      }
+    };
+    SERVICES.kori.id = SERVICES.unud.id;
+    SERVICES.kori.en = SERVICES.unud.en;
+
+    var TRANSLATIONS = {
+      id: {
+        'nav.home': 'Beranda', 'nav.services': 'Layanan', 'nav.about': 'Cabang', 'nav.location': 'Lokasi', 'nav.booking': 'Booking',
+        'wa.message': "Hallo MEDA’S Barbershop, saya mau potong rambut. Apa sekarang ada slot untuk saya?",
+        'hero.line1': "MEDA'S BARBERSHOP",
+        'hero.sub': '<span class="sub-title">The Best Barbershop In Town</span> Barbershop terbaik di kota anda dengan Tukang Cukur ramah dan terampil, tempat nyaman, AC dan WiFi gratis.',
+        'hero.cta': 'Lihat Layanan + Harga',
+        'why.title': 'MENGAPA <span class="accent">MEDA\'S Barbershop</span>?',
+        'why.desc': 'Bukan sekadar potong rambut — ini soal pengalaman dan kenyamanan.',
+        'features.1.title': 'Lokasi Strategis', 'features.1.desc': 'Tersedia di UNUD Jimbaran, Kori Nuansa Jimbaran, dan Batanghari Panjer.',
+        'features.2.title': 'Tukang Cukur Berpengalaman', 'features.2.desc': 'Dilayani dengan senyum dan komunikasi yang nyaman.',
+        'features.3.title': 'Wi-Fi Gratis', 'features.3.desc': 'Free WiFi Spot — tetap terhubung saat menunggu.',
+        'services.title': 'Layanan & <span class="accent">Harga</span>',
+        'services.desc': 'Pilih layanan yang anda butuhkan dengan harga yang terjangkau dan kualitas terjaga',
+        'about.title': 'TENTANG <span class="accent">CABANG KAMI</span>',
+        'about.desc': "MEDA'S Barbershop mempunyai 3 cabang di kota anda yang mudah anda jangkau.",
+        'gallery.title': 'Galeri <span class="accent">Foto</span>', 'gallery.desc': 'Hasil potongan asli dari outlet kami.',
+        'location.title': 'JAM BUKA & <span class="accent">LOKASI</span>',
+        'location.desc': 'Berada di kota anda yang mudah dijangkau.',
+        'location.day': 'Setiap Hari',
+        'footer.tagline': 'The Best Barbershop in Town. One place haircut & hair wash. Friendly barbers, cozy place, and free WiFi.',
+        'footer.nav': 'Navigation', 'footer.contact': 'Contact', 'footer.rights': 'All rights reserved.'
+      },
+      en: {
+        'nav.home': 'Home', 'nav.services': 'Services', 'nav.about': 'Branches', 'nav.location': 'Location', 'nav.booking': 'Booking',
+        'wa.message': "Hello MEDA'S Barbershop, I'd like to get a haircut. Do you have any available slots right now?",
+        'hero.line1': "MEDA'S BARBERSHOP",
+        'hero.sub': '<span class="sub-title">The Best Barbershop In Town</span> The best barbershop in your city with friendly and skilled barbers, comfortable place, AC and free WiFi.',
+        'hero.cta': 'View Services + Prices',
+        'why.title': 'WHY <span class="accent">MEDA\'S Barbershop</span>?',
+        'why.desc': 'Not just a haircut — it\'s about experience and comfort.',
+        'features.1.title': 'Strategic Location', 'features.1.desc': 'Available at UNUD Jimbaran, Kori Nuansa Jimbaran, and Batanghari Panjer.',
+        'features.2.title': 'Experienced Barberman', 'features.2.desc': 'Served with a smile and comfortable communication.',
+        'features.3.title': 'Free Wi-Fi', 'features.3.desc': 'Free WiFi Spot — stay connected while waiting.',
+        'services.title': 'Services & <span class="accent">Prices</span>',
+        'services.desc': 'Choose the service you need with affordable prices and maintained quality',
+        'about.title': 'ABOUT <span class="accent">OUR BRANCHES</span>',
+        'about.desc': "MEDA'S Barbershop has 3 branches in your city that are easy to reach.",
+        'gallery.title': 'Photo <span class="accent">Gallery</span>', 'gallery.desc': 'Real haircut results from our outlets.',
+        'location.title': 'OPENING HOURS & <span class="accent">LOCATION</span>',
+        'location.desc': 'Located in your city, easy to reach.',
+        'location.day': 'Every Day',
+        'footer.tagline': 'The Best Barbershop in Town. One place haircut & hair wash. Friendly barbers, cozy place, and free WiFi.',
+        'footer.nav': 'Navigation', 'footer.contact': 'Contact', 'footer.rights': 'All rights reserved.'
+      }
+    };
+
+    var htmlRoot = document.getElementById('html-root');
+    var navbar = document.getElementById('navbar');
+    var progressBar = document.getElementById('progress-bar');
+    var hamburger = document.getElementById('hamburger');
+    var mobileMenu = document.getElementById('mobileMenu');
+    var langId = document.getElementById('lang-id');
+    var langEn = document.getElementById('lang-en');
+    var yearSpan = document.getElementById('year');
+    var serviceGrid = document.getElementById('serviceGrid');
+    var tabs = document.querySelectorAll('.branch-tab');
+    var navLinks = document.querySelectorAll('.nav-links a');
+    var sections = document.querySelectorAll('section[id]');
+
+    function init() {
+      yearSpan.textContent = new Date().getFullYear();
+      renderServices();
+      updateLanguage('id', true);
+      setupWhatsAppLinks();
+      setupScrollAnimations();
+      setupNavbar();
+      setupProgressBar();
+      setupMobileMenu();
+      setupLanguageToggle();
+      setupTabs();
+      setupActiveNav();
+      setupSmoothScroll();
+    }
+
+    function setupWhatsAppLinks() {
+      var msg = encodeURIComponent(TRANSLATIONS[currentLang]['wa.message']);
+      var url = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + msg;
+      document.getElementById('navBooking').href = url;
+      document.getElementById('mobileBooking').href = url;
+      document.getElementById('waFloat').href = url;
+    }
+
+    function renderServices() {
+      var data = SERVICES[currentBranch][currentLang];
+      var html = '';
+      for (var i = 0; i < data.length; i++) {
+        var s = data[i];
+        html += '<div class="service-card">' +
+          '<h3>' + s.name + '</h3>' +
+          '<div class="price">' + s.price + '</div>' +
+          '</div>';
+      }
+      serviceGrid.innerHTML = html;
+    }
+
+    function updateLanguage(lang, isInitial) {
+      currentLang = lang;
+      htmlRoot.setAttribute('lang', lang);
+      if (lang === 'id') {
+        langId.classList.add('active'); langEn.classList.remove('active');
+      } else {
+        langEn.classList.add('active'); langId.classList.remove('active');
+      }
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.getAttribute('data-i18n');
+        if (TRANSLATIONS[lang][key]) el.innerHTML = TRANSLATIONS[lang][key];
+      });
+      renderServices();
+      setupWhatsAppLinks();
+      if (!isInitial) observeReveals();
+    }
+
+    function setupLanguageToggle() {
+      langId.addEventListener('click', function() { if (currentLang !== 'id') updateLanguage('id'); });
+      langEn.addEventListener('click', function() { if (currentLang !== 'en') updateLanguage('en'); });
+    }
+
+    function setupTabs() {
+      tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          tabs.forEach(function(t) { t.classList.remove('active'); });
+          this.classList.add('active');
+          currentBranch = this.getAttribute('data-branch');
+          renderServices();
+        });
+      });
+    }
+
+    function setupNavbar() {
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 80) navbar.classList.add('scrolled');
+        else navbar.classList.remove('scrolled');
+      }, { passive: true });
+    }
+
+    function setupProgressBar() {
+      window.addEventListener('scroll', function() {
+        var scrollTop = window.scrollY;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+        progressBar.style.width = progress + '%';
+      }, { passive: true });
+    }
+
+    function setupMobileMenu() {
+      hamburger.addEventListener('click', function() {
+        var isOpen = mobileMenu.classList.contains('open');
+        if (isOpen) {
+          mobileMenu.classList.remove('open'); hamburger.classList.remove('open');
+          document.body.style.overflow = '';
+        } else {
+          mobileMenu.classList.add('open'); hamburger.classList.add('open');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+      mobileMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          mobileMenu.classList.remove('open'); hamburger.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      });
+    }
+
+    function setupScrollAnimations() {
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12 });
+        document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+      } else {
+        document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('visible'); });
+      }
+    }
+
+    function observeReveals() {
+      document.querySelectorAll('.reveal:not(.visible)').forEach(function(el) { el.classList.add('visible'); });
+    }
+
+    function setupActiveNav() {
+      if ('IntersectionObserver' in window) {
+        var navObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              var id = entry.target.getAttribute('id');
+              navLinks.forEach(function(link) {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + id) link.classList.add('active');
+              });
+            }
+          });
+        }, { threshold: 0.3, rootMargin: '-80px 0px -60% 0px' });
+        sections.forEach(function(section) { navObserver.observe(section); });
+      }
+    }
+
+    function setupSmoothScroll() {
+      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+          var targetId = this.getAttribute('href');
+          if (targetId === '#') return;
+          var target = document.querySelector(targetId);
+          if (target) {
+            e.preventDefault();
+            var offset = 70;
+            var targetPosition = target.getBoundingClientRect().top + window.scrollY - offset;
+            window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+          }
+        });
+      });
+    }
+
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
+  })();
+  </script>
+</body>
+</html>
